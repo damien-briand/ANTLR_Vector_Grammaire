@@ -4,7 +4,9 @@ import antlr.stackbasedoperationsBaseVisitor;
 import antlr.stackbasedoperationsParser;
 import evaluationWithVisitor.Variable;
 import model.VariableDeclaration;
+import org.antlr.v4.runtime.Token;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,60 +15,91 @@ public class AntlrToVarDecl extends stackbasedoperationsBaseVisitor<VariableDecl
     private List<String> semanticErrors;
 
     // The symbol table stores all the variables declared in the program so far
-    private HashMap<String, Variable<?>> symbolTable;
+    private HashMap<String, Variable> symbolTable;
 
-    public AntlrToVarDecl(List<String> semanticErrors, HashMap<String, Variable<?>> symbolTable) {
+    public AntlrToVarDecl(List<String> semanticErrors, HashMap<String, Variable> symbolTable) {
         this.semanticErrors = semanticErrors;
         this.symbolTable = symbolTable;
     }
 
     @Override
     public VariableDeclaration<?> visitVararray(stackbasedoperationsParser.VararrayContext ctx) {
-        String varName = ctx.ID().getText();
-        if (symbolTable.containsKey(varName)) {
-            semanticErrors.add("Variable " + varName + " is already declared.");
-            return null;
+        // ARRAY_TYPE ID ';' #vararray
+        Token idToken = ctx.ID().getSymbol();
+        int line = idToken.getLine();
+        int column = idToken.getCharPositionInLine() + 1;
+
+        String type = ctx.getChild(0).getText();
+        String id = ctx.getChild(1).getText();
+
+        if (symbolTable.containsKey(id)) {
+            semanticErrors.add("Error: variable " + id + " already declared (" + line + ", " + column + ")");
+        } else {
+
+            symbolTable.put(id, new Variable(id, type));
         }
-        VariableDeclaration<?> varDecl = new VariableDeclaration<>(varName, "array");
-        symbolTable.put(varName, new Variable(varName, "array"));
-        return varDecl;
+
+        return new VariableDeclaration(id, type);
     }
 
     @Override
     public VariableDeclaration<?> visitInitvararray(stackbasedoperationsParser.InitvararrayContext ctx) {
-        String varName = ctx.ID().getText();
-        if (symbolTable.containsKey(varName)) {
-            semanticErrors.add("Variable " + varName + " is already declared.");
-            return null;
+        // ARRAY_TYPE ID '=' array ';'   #initvararray
+        Token idToken = ctx.ID().getSymbol();
+        int line = idToken.getLine();
+        int column = idToken.getCharPositionInLine() + 1;
+
+        String type = ctx.getChild(0).getText();
+        String id = ctx.getChild(1).getText();
+        ArrayList<Integer> array = new AntlrToArray().visit(ctx.array());
+
+        if (symbolTable.containsKey(id)) {
+            semanticErrors.add("Error: variable " + id + " already declared (" + line + ", " + column + ")");
+        } else {
+            symbolTable.put(id, new Variable(id, type, array));
         }
-        List<Integer> arrayValues = new AntlrToArray().visit(ctx.array());
-        VariableDeclaration<?> varDecl = new VariableDeclaration<>(varName, "array", arrayValues);
-        symbolTable.put(varName, new Variable(varName, "array", arrayValues));
-        return varDecl;
+
+        return new VariableDeclaration(id, type, array);
     }
+
 
     @Override
     public VariableDeclaration<?> visitVarint(stackbasedoperationsParser.VarintContext ctx) {
-        String varName = ctx.ID().getText();
-        if (symbolTable.containsKey(varName)) {
-            semanticErrors.add("Variable " + varName + " is already declared.");
-            return null;
+        // INT_TYPE ID ';' #varint
+        Token idToken = ctx.ID().getSymbol();
+        int line = idToken.getLine();
+        int column = idToken.getCharPositionInLine() + 1;
+
+        String type = ctx.getChild(0).getText();
+        String id = ctx.getChild(1).getText();
+
+        if (symbolTable.containsKey(id)) {
+            semanticErrors.add("Error: variable " + id + " already declared (" + line + ", " + column + ")");
+        } else {
+
+            symbolTable.put(id, new Variable(id, type));
         }
-        VariableDeclaration<?> varDecl = new VariableDeclaration<>(varName, "int");
-        symbolTable.put(varName, new Variable(varName, "int"));
-        return varDecl;
+
+        return new VariableDeclaration(id, type);
     }
 
     @Override
-    public VariableDeclaration<?> visitInitvarint(stackbasedoperationsParser.InitvarintContext ctx) {
-        String varName = ctx.ID().getText();
-        if (symbolTable.containsKey(varName)) {
-            semanticErrors.add("Variable " + varName + " is already declared.");
-            return null;
+    public VariableDeclaration visitInitvarint(stackbasedoperationsParser.InitvarintContext ctx) {
+        // INT_TYPE ID '=' INT ';'       #initvarint
+        Token idToken = ctx.ID().getSymbol();
+        int line = idToken.getLine();
+        int column = idToken.getCharPositionInLine() + 1;
+
+        String type = ctx.getChild(0).getText();
+        String id = ctx.getChild(1).getText();
+        Integer value = Integer.parseInt(ctx.INT().getText());
+
+        if (symbolTable.containsKey(id)) {
+            semanticErrors.add("Error: variable " + id + " already declared (" + line + ", " + column + ")");
+        } else {
+            symbolTable.put(id, new Variable(id, type, value));
         }
-        int value = Integer.parseInt(ctx.INT().getText());
-        VariableDeclaration<?> varDecl = new VariableDeclaration<>(varName, "int", value);
-        symbolTable.put(varName, new Variable(varName, "int", value));
-        return varDecl;
+
+        return new VariableDeclaration(id, type, value);
     }
 }

@@ -1,6 +1,6 @@
 package model;
 
-import evaluationWithVisitor.StackBasedOperationsVisitor;
+import evaluationWithVisitor.ArrayOperationsVisitor;
 
 public class Affectation<T> extends Instruction {
     private String ID;
@@ -20,7 +20,7 @@ public class Affectation<T> extends Instruction {
     }
 
     @Override
-    public void accept(StackBasedOperationsVisitor<?> visitor) {
-        visitor.visit(this);
+    public Object accept(ArrayOperationsVisitor<?> visitor) {
+        return visitor.visit(this);
     }
 }

@@ -3,9 +3,8 @@ package apps;
 import ParseTreeVisitor.AntlrToProgram;
 import antlr.stackbasedoperationsLexer;
 import antlr.stackbasedoperationsParser;
-import evaluationWithVisitor.StackBasedOperationsDoInterpretVisitor;
+import evaluationWithVisitor.ArrayOperationDoInterpretVisitor;
 import model.Program;
-import model.SimpleOp;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -39,7 +38,7 @@ public class ComputeApp_EvalVisitor {
             System.out.println(commandLineModel.instructions);
 
             // build the visitor for the first named rule
-            StackBasedOperationsDoInterpretVisitor doInterpretVisitor = new StackBasedOperationsDoInterpretVisitor();
+            ArrayOperationDoInterpretVisitor doInterpretVisitor = new ArrayOperationDoInterpretVisitor();
             // use this visitor to visit the parse tree
             // this visitor produce a Model object
             Object result = doInterpretVisitor.visit(commandLineModel);

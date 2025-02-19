@@ -1,6 +1,6 @@
 package model;
 
-import evaluationWithVisitor.StackBasedOperationsVisitor;
+import evaluationWithVisitor.ArrayOperationsVisitor;
 
 public class Sum extends SimpleOp {
     public Sum() {
@@ -13,7 +13,7 @@ public class Sum extends SimpleOp {
     }
 
     @Override
-    public void accept(StackBasedOperationsVisitor<?> visitor) {
-        visitor.visit(this);
+    public Object accept(ArrayOperationsVisitor<?> visitor) {
+        return visitor.visit(this);
     }
 }

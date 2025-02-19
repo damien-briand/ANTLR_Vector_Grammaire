@@ -1,6 +1,6 @@
 package model;
 
-import evaluationWithVisitor.StackBasedOperationsVisitor;
+import evaluationWithVisitor.ArrayOperationsVisitor;
 
 public class VariableDeclaration<V> extends Instruction{
     private String ID;
@@ -30,13 +30,17 @@ public class VariableDeclaration<V> extends Instruction{
         this.value = value;
     }
 
+    public String getID() {
+        return ID;
+    }
+
     @Override
     public String toString() {
         return "VariableDeclaration{" + "ID=" + ID + ", type=" + type + ", value=" + value + '}' + '\n';
     }
 
     @Override
-    public void accept(StackBasedOperationsVisitor<?> visitor) {
-        visitor.visit(this);
+    public Object accept(ArrayOperationsVisitor<?> visitor) {
+        return visitor.visit(this);
     }
 }

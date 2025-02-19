@@ -2,7 +2,7 @@ package evaluationWithVisitor;
 
 import model.*;
 
-public interface StackBasedOperationsVisitor<R> {
+public interface ArrayOperationsVisitor<R> {
     // classes to visit
     // The whole command: CommandLine
     // The Instructions

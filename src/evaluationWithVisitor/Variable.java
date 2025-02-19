@@ -11,6 +11,12 @@ public class Variable<V> {
     private String ID;
     private String type;
     private V value;
+
+    // Constants enum type
+    public static enum Type {
+        INT, ARRAY
+    }
+
     // construct a variable with no initial value (null)
     public Variable(String ID, String type) {
         this.ID = ID;

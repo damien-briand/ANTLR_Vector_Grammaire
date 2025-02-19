@@ -26,14 +26,12 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
         String varName = ctx.ID().getText();
         if (!symbolTable.containsKey(varName)) {
             semanticErrors.add("Variable " + varName + " is not declared.");
-            return null;
         }
-        AntlrToSimpleOp simpleOpVisitor = new AntlrToSimpleOp();
+        AntlrToSimpleOp simpleOpVisitor = new AntlrToSimpleOp(semanticErrors, symbolTable);
         SimpleOp simpleOp = simpleOpVisitor.visit(ctx.simpleop());
         Variable var = symbolTable.get(varName);
         if (!var.getType().equals("simpleop")) {
             semanticErrors.add("Type mismatch: Variable " + varName + " is not of type simpleop.");
-            return null;
         }
         return new Affectation<>(varName, simpleOp);
     }
@@ -43,14 +41,12 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
         String varName = ctx.ID().getText();
         if (!symbolTable.containsKey(varName)) {
             semanticErrors.add("Variable " + varName + " is not declared.");
-            return null;
         }
         AntlrToArray arrayVisitor = new AntlrToArray();
         List<Integer> arrayValues = arrayVisitor.visit(ctx.array());
         Variable var = symbolTable.get(varName);
         if (!var.getType().equals("array")) {
             semanticErrors.add("Type mismatch: Variable " + varName + " is not of type array.");
-            return null;
         }
         return new Affectation<>(varName, arrayValues);
     }
@@ -60,13 +56,11 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
         String varName = ctx.ID().getText();
         if (!symbolTable.containsKey(varName)) {
             semanticErrors.add("Variable " + varName + " is not declared.");
-            return null;
         }
         int value = Integer.parseInt(ctx.INT().getText());
         Variable var = symbolTable.get(varName);
         if (!var.getType().equals("int")) {
             semanticErrors.add("Type mismatch: Variable " + varName + " is not of type int.");
-            return null;
         }
         return new Affectation<>(varName, value);
     }

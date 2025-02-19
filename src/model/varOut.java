@@ -1,6 +1,6 @@
 package model;
 
-import evaluationWithVisitor.StackBasedOperationsVisitor;
+import evaluationWithVisitor.ArrayOperationsVisitor;
 
 public class varOut extends Instruction{
     private String ID;
@@ -14,7 +14,7 @@ public class varOut extends Instruction{
     }
 
     @Override
-    public void accept(StackBasedOperationsVisitor<?> visitor) {
-        visitor.visit(this);
+    public Object accept(ArrayOperationsVisitor<?> visitor) {
+        return visitor.visit(this);
     }
 }
