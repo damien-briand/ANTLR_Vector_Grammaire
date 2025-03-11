@@ -1,2 +1,2 @@
-array var2 = [1, 2, 3];
-var2;
+array var = [1, 2, 3];
+var;

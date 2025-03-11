@@ -4,6 +4,7 @@ import antlr.stackbasedoperationsBaseVisitor;
 import antlr.stackbasedoperationsParser;
 import evaluationWithVisitor.Variable;
 import model.varOut;
+import utils.MySyntaxeErrorListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,8 @@ public class AntlrToVarOut extends stackbasedoperationsBaseVisitor<varOut> {
     public varOut visitVarout(stackbasedoperationsParser.VaroutContext ctx) {
         String varName = ctx.ID().getText();
         if (!symbolTable.containsKey(varName)) {
-            semanticErrors.add("Variable " + varName + " is not declared.");
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName);
+            semanticErrors.add(syntaxError.getErrorDeclaration());
             return null;
         }
         return new varOut(varName);

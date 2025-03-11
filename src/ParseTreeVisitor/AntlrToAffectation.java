@@ -5,6 +5,7 @@ import antlr.stackbasedoperationsParser;
 import evaluationWithVisitor.Variable;
 import model.Affectation;
 import model.SimpleOp;
+import utils.MySyntaxeErrorListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,13 +26,15 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
     public Affectation<?> visitAffectsimpleop(stackbasedoperationsParser.AffectsimpleopContext ctx) {
         String varName = ctx.ID().getText();
         if (!symbolTable.containsKey(varName)) {
-            semanticErrors.add("Variable " + varName + " is not declared.");
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName);
+            semanticErrors.add(syntaxError.getErrorDeclaration());
         }
         AntlrToSimpleOp simpleOpVisitor = new AntlrToSimpleOp(semanticErrors, symbolTable);
         SimpleOp simpleOp = simpleOpVisitor.visit(ctx.simpleop());
         Variable var = symbolTable.get(varName);
         if (!var.getType().equals("simpleop")) {
-            semanticErrors.add("Type mismatch: Variable " + varName + " is not of type simpleop.");
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName);
+            semanticErrors.add(syntaxError.getErrorTypeMismatch("simpleop"));
         }
         return new Affectation<>(varName, simpleOp);
     }
@@ -40,13 +43,15 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
     public Affectation<?> visitAffectarray(stackbasedoperationsParser.AffectarrayContext ctx) {
         String varName = ctx.ID().getText();
         if (!symbolTable.containsKey(varName)) {
-            semanticErrors.add("Variable " + varName + " is not declared.");
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName);
+            semanticErrors.add(syntaxError.getErrorDeclaration());
         }
         AntlrToArray arrayVisitor = new AntlrToArray();
         List<Integer> arrayValues = arrayVisitor.visit(ctx.array());
         Variable var = symbolTable.get(varName);
         if (!var.getType().equals("array")) {
-            semanticErrors.add("Type mismatch: Variable " + varName + " is not of type array.");
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName);
+            semanticErrors.add(syntaxError.getErrorTypeMismatch("array"));
         }
         return new Affectation<>(varName, arrayValues);
     }
@@ -55,12 +60,14 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
     public Affectation<?> visitAffectint(stackbasedoperationsParser.AffectintContext ctx) {
         String varName = ctx.ID().getText();
         if (!symbolTable.containsKey(varName)) {
-            semanticErrors.add("Variable " + varName + " is not declared.");
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName);
+            semanticErrors.add(syntaxError.getErrorDeclaration());
         }
         int value = Integer.parseInt(ctx.INT().getText());
         Variable var = symbolTable.get(varName);
         if (!var.getType().equals("int")) {
-            semanticErrors.add("Type mismatch: Variable " + varName + " is not of type int.");
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName);
+            semanticErrors.add(syntaxError.getErrorTypeMismatch("int"));
         }
         return new Affectation<>(varName, value);
     }

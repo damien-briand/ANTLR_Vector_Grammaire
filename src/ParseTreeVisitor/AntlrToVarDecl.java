@@ -5,6 +5,7 @@ import antlr.stackbasedoperationsParser;
 import evaluationWithVisitor.Variable;
 import model.VariableDeclaration;
 import org.antlr.v4.runtime.Token;
+import utils.MySyntaxeErrorListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +34,8 @@ public class AntlrToVarDecl extends stackbasedoperationsBaseVisitor<VariableDecl
         String id = ctx.getChild(1).getText();
 
         if (symbolTable.containsKey(id)) {
-            semanticErrors.add("Error: variable " + id + " already declared (" + line + ", " + column + ")");
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, id);
+            semanticErrors.add(syntaxError.getErrorAlreadyDecl());
         } else {
 
             symbolTable.put(id, new Variable(id, type));
@@ -54,7 +56,8 @@ public class AntlrToVarDecl extends stackbasedoperationsBaseVisitor<VariableDecl
         ArrayList<Integer> array = new AntlrToArray().visit(ctx.array());
 
         if (symbolTable.containsKey(id)) {
-            semanticErrors.add("Error: variable " + id + " already declared (" + line + ", " + column + ")");
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, id);
+            semanticErrors.add(syntaxError.getErrorAlreadyDecl());
         } else {
             symbolTable.put(id, new Variable(id, type, array));
         }
@@ -74,7 +77,8 @@ public class AntlrToVarDecl extends stackbasedoperationsBaseVisitor<VariableDecl
         String id = ctx.getChild(1).getText();
 
         if (symbolTable.containsKey(id)) {
-            semanticErrors.add("Error: variable " + id + " already declared (" + line + ", " + column + ")");
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, id);
+            semanticErrors.add(syntaxError.getErrorAlreadyDecl());
         } else {
 
             symbolTable.put(id, new Variable(id, type));
@@ -95,7 +99,8 @@ public class AntlrToVarDecl extends stackbasedoperationsBaseVisitor<VariableDecl
         Integer value = Integer.parseInt(ctx.INT().getText());
 
         if (symbolTable.containsKey(id)) {
-            semanticErrors.add("Error: variable " + id + " already declared (" + line + ", " + column + ")");
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, id);
+            semanticErrors.add(syntaxError.getErrorAlreadyDecl());
         } else {
             symbolTable.put(id, new Variable(id, type, value));
         }

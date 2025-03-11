@@ -38,7 +38,7 @@ public class ComputeApp_EvalVisitor {
             System.out.println(commandLineModel.instructions);
 
             // print the semantic errors
-            System.err.println("Semantic errors:");
+            System.err.println("** Semantic errors **");
             for (String error : inputVisitor.semanticErrors) {
                 System.err.println(error);
             }
