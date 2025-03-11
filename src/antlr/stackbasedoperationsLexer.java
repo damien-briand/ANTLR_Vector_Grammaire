@@ -1,4 +1,4 @@
-// Generated from /home/damien/Documents/Dev/Analyse_Syntaxique/ArrayOperation_Project/src/antlr/stackbasedoperations.g4 by ANTLR 4.13.2
+// Generated from /home/damien/Documents/Dev/Analyse_Syntaxique/ArrayOperation_Project/src/antlr/ArrayOperations.g4 by ANTLR 4.13.2
 package antlr;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -89,7 +89,7 @@ public class stackbasedoperationsLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "stackbasedoperations.g4"; }
+	public String getGrammarFileName() { return "ArrayOperations.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

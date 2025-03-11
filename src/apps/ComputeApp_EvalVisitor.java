@@ -37,14 +37,17 @@ public class ComputeApp_EvalVisitor {
             System.out.println("The model printed using toString of the Model classes:");
             System.out.println(commandLineModel.instructions);
 
+            // print the semantic errors
+            System.err.println("Semantic errors:");
+            for (String error : inputVisitor.semanticErrors) {
+                System.err.println(error);
+            }
+
             // build the visitor for the first named rule
             ArrayOperationDoInterpretVisitor doInterpretVisitor = new ArrayOperationDoInterpretVisitor();
             // use this visitor to visit the parse tree
             // this visitor produce a Model object
             Object result = doInterpretVisitor.visit(commandLineModel);
-            //Print the model
-            System.out.println("The result of the computation is:");
-            System.out.println(result);
         }
     }
 

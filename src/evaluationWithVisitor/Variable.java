@@ -35,6 +35,6 @@ public class Variable<V> {
     // for the purpose of the evaluation of the program while printing the symbols table
     @Override
     public String toString() {
-        return "Variable{" + "ID=" + ID + ", type=" + type + ", value=" + value + '}' + '\n';
+        return "Variable { " + "ID=" + ID + ", type=" + type + ", value=" + value + '}' + '\n';
     }
 }

@@ -1,4 +1,4 @@
-// Generated from /home/damien/Documents/Dev/Analyse_Syntaxique/ArrayOperation_Project/src/antlr/stackbasedoperations.g4 by ANTLR 4.13.2
+// Generated from /home/damien/Documents/Dev/Analyse_Syntaxique/ArrayOperation_Project/src/antlr/ArrayOperations.g4 by ANTLR 4.13.2
 package antlr;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -24,7 +24,7 @@ public class stackbasedoperationsParser extends Parser {
 		RULE_affectation = 4, RULE_varout = 5, RULE_array = 6;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"program", "instruction", "simpleop", "vardecl", "affectation", "varout", 
+			"program", "instruction", "simpleop", "vardecl", "error_affectation", "varout",
 			"array"
 		};
 	}
@@ -78,7 +78,7 @@ public class stackbasedoperationsParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "stackbasedoperations.g4"; }
+	public String getGrammarFileName() { return "ArrayOperations.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

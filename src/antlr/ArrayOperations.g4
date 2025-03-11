@@ -1,4 +1,4 @@
-grammar stackbasedoperations;
+grammar ArrayOperations;
 
 /** Simple grammar on vector operations */
 /* GRAMMAR RULES, annotated; lowercase letters */

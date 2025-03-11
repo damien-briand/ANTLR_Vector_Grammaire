@@ -14,7 +14,7 @@ public class AntlrToProgram extends stackbasedoperationsBaseVisitor<Program>{
     // List of semantic errors
     // – variable re-declaration
     // – variable not declared
-    // – affectation to a none conformant type
+    // – error_affectation to a none conformant type
     // public to be accessed by the main application program
     public List<String> semanticErrors;
 
