@@ -26,9 +26,11 @@ public class Variable<V> {
     public Variable(String ID, String type, V value) {
         this.ID = ID;
         this.type = type;
-// int or array
+        // int or array
         this.value = value;
     }
+
+    // getters and setters
     public String getType() { return type; }
     public V getValue() { return value; }
     public void setValue(V value) { this.value = value; }

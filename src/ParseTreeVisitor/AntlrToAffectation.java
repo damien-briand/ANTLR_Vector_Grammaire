@@ -22,6 +22,14 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
         this.symbolTable = symbolTable;
     }
 
+    /**
+     * Visits an Affectsimpleop node and creates an Affectation object for a simple operation.
+     * It checks if the variable is declared and if the type matches "simpleop".
+     * If the variable is not declared or the type does not match, it adds a semantic error.
+     *
+     * @param ctx the Affectsimpleop context to visit
+     * @return an Affectation object representing the simple operation
+     */
     @Override
     public Affectation<?> visitAffectsimpleop(stackbasedoperationsParser.AffectsimpleopContext ctx) {
         String varName = ctx.ID().getText();
@@ -39,6 +47,14 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
         return new Affectation<>(varName, simpleOp);
     }
 
+    /**
+     * Visits an Affectarray node and creates an Affectation object for an array.
+     * It checks if the variable is declared and if the type matches "array".
+     * If the variable is not declared or the type does not match, it adds a semantic error.
+     *
+     * @param ctx the Affectarray context to visit
+     * @return an Affectation object representing the array
+     */
     @Override
     public Affectation<?> visitAffectarray(stackbasedoperationsParser.AffectarrayContext ctx) {
         String varName = ctx.ID().getText();
@@ -56,6 +72,14 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
         return new Affectation<>(varName, arrayValues);
     }
 
+    /**
+     * Visits an Affectint node and creates an Affectation object for an integer value.
+     * It checks if the variable is declared and if the type matches "int".
+     * If the variable is not declared or the type does not match, it adds a semantic error.
+     *
+     * @param ctx the Affectint context to visit
+     * @return an Affectation object representing the integer value
+     */
     @Override
     public Affectation<?> visitAffectint(stackbasedoperationsParser.AffectintContext ctx) {
         String varName = ctx.ID().getText();
