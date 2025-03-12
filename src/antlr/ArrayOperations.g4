@@ -21,11 +21,14 @@ vardecl : ARRAY_TYPE ID ';'             #vararray
         | ARRAY_TYPE ID '=' array ';'   #initvararray
         | INT_TYPE ID ';'               #varint
         | INT_TYPE ID '=' INT ';'       #initvarint
+        | INT_TYPE ID '=' ID ';'        #initvarvar
+        | ARRAY_TYPE ID '=' ID ';'      #initvararrayvar
 ;
 
 affectation : ID '=' simpleop   #affectsimpleop
             | ID '=' array ';'  #affectarray
             | ID '=' INT ';'    #affectint
+            | ID '=' ID ';'     #affectvar
 ;
 
 varout : ID ';'

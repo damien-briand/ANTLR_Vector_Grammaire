@@ -114,7 +114,12 @@ public class ArrayOperationDoInterpretVisitor implements ArrayOperationsVisitor<
             SimpleOp simpleOp = (SimpleOp) affectation.getValue();
             Object result = simpleOp.accept(this);
             var.setValue(result);
-        } else {
+        } else if (affectation.getValue() instanceof String) {
+            Variable var2 = variables.get(affectation.getValue());
+            Variable<?> variable = new Variable<>(affectation.getID(), type, var2.getValue());
+            variables.put(affectation.getID(), variable);
+        }
+        else {
             Variable<?> variable = new Variable<>(affectation.getID(), type, affectation.getValue());
             variables.put(affectation.getID(), variable);
         }
@@ -134,7 +139,8 @@ public class ArrayOperationDoInterpretVisitor implements ArrayOperationsVisitor<
         if (variableDeclaration.getValue() != null) {
             Variable<?> variable = new Variable<>(variableDeclaration.getID(), variableDeclaration.getType(), variableDeclaration.getValue());
             variables.put(variableDeclaration.getID(), variable);
-        } else {
+        }
+        else {
             Variable<?> variable = new Variable<>(variableDeclaration.getID(), variableDeclaration.getType());
             variables.put(variableDeclaration.getID(), variable);
         }

@@ -1,8 +1,8 @@
 package apps;
 
 import ParseTreeVisitor.AntlrToProgram;
-import antlr.stackbasedoperationsLexer;
-import antlr.stackbasedoperationsParser;
+import antlr.ArrayOperationsLexer;
+import antlr.ArrayOperationsParser;
 import model.Program;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -19,7 +19,7 @@ public class ProduceTheModel {
         } else {
             String fileName = args[0];
             // get the parser with the helper method
-            stackbasedoperationsParser parser = getParser(fileName);
+            ArrayOperationsParser parser = getParser(fileName);
 
             // build the parse tree (begin parsing at input rule 'mm')
             ParseTree tree = parser.program();
@@ -43,17 +43,17 @@ public class ProduceTheModel {
      * Here the type of parser and lexer are specific to the
      * grammar name expressionprefixe.g4
      */
-    private static stackbasedoperationsParser getParser(String fileName) {
-        stackbasedoperationsParser parser = null;
+    private static ArrayOperationsParser getParser(String fileName) {
+        ArrayOperationsParser parser = null;
 
         try {
             CharStream input = CharStreams.fromFileName(fileName);
             // build the lexer (tokenizer)
-            stackbasedoperationsLexer lexer = new stackbasedoperationsLexer(input);
+            ArrayOperationsLexer lexer = new ArrayOperationsLexer(input);
             // produce the list of tokens
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             // initialize parser on the tokens
-            parser = new stackbasedoperationsParser(tokens);
+            parser = new ArrayOperationsParser(tokens);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

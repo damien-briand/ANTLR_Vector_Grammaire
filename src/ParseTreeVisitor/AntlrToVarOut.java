@@ -1,7 +1,7 @@
 package ParseTreeVisitor;
 
-import antlr.stackbasedoperationsBaseVisitor;
-import antlr.stackbasedoperationsParser;
+import antlr.ArrayOperationsBaseVisitor;
+import antlr.ArrayOperationsParser;
 import evaluationWithVisitor.Variable;
 import model.varOut;
 import utils.MySyntaxeErrorListener;
@@ -9,7 +9,7 @@ import utils.MySyntaxeErrorListener;
 import java.util.HashMap;
 import java.util.List;
 
-public class AntlrToVarOut extends stackbasedoperationsBaseVisitor<varOut> {
+public class AntlrToVarOut extends ArrayOperationsBaseVisitor<varOut> {
     // List of semantic errors
     private List<String> semanticErrors;
 
@@ -22,7 +22,7 @@ public class AntlrToVarOut extends stackbasedoperationsBaseVisitor<varOut> {
     }
 
     @Override
-    public varOut visitVarout(stackbasedoperationsParser.VaroutContext ctx) {
+    public varOut visitVarout(ArrayOperationsParser.VaroutContext ctx) {
         String varName = ctx.ID().getText();
         if (!symbolTable.containsKey(varName)) {
             MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName);
