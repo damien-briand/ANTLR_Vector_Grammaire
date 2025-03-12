@@ -1,7 +1,7 @@
 package ParseTreeVisitor;
 
-import antlr.stackbasedoperationsBaseVisitor;
-import antlr.stackbasedoperationsParser;
+import antlr.ArrayOperationsBaseVisitor;
+import antlr.ArrayOperationsParser;
 import evaluationWithVisitor.Variable;
 import model.VariableDeclaration;
 import org.antlr.v4.runtime.Token;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AntlrToVarDecl extends stackbasedoperationsBaseVisitor<VariableDeclaration<?>> {
+public class AntlrToVarDecl extends ArrayOperationsBaseVisitor<VariableDeclaration<?>> {
     // List of semantic errors
     private List<String> semanticErrors;
 
@@ -24,7 +24,7 @@ public class AntlrToVarDecl extends stackbasedoperationsBaseVisitor<VariableDecl
     }
 
     @Override
-    public VariableDeclaration<?> visitVararray(stackbasedoperationsParser.VararrayContext ctx) {
+    public VariableDeclaration<?> visitVararray(ArrayOperationsParser.VararrayContext ctx) {
         // ARRAY_TYPE ID ';' #vararray
         Token idToken = ctx.ID().getSymbol();
         int line = idToken.getLine();
@@ -45,7 +45,7 @@ public class AntlrToVarDecl extends stackbasedoperationsBaseVisitor<VariableDecl
     }
 
     @Override
-    public VariableDeclaration<?> visitInitvararray(stackbasedoperationsParser.InitvararrayContext ctx) {
+    public VariableDeclaration<?> visitInitvararray(ArrayOperationsParser.InitvararrayContext ctx) {
         // ARRAY_TYPE ID '=' array ';'   #initvararray
         Token idToken = ctx.ID().getSymbol();
         int line = idToken.getLine();
@@ -67,7 +67,7 @@ public class AntlrToVarDecl extends stackbasedoperationsBaseVisitor<VariableDecl
 
 
     @Override
-    public VariableDeclaration<?> visitVarint(stackbasedoperationsParser.VarintContext ctx) {
+    public VariableDeclaration<?> visitVarint(ArrayOperationsParser.VarintContext ctx) {
         // INT_TYPE ID ';' #varint
         Token idToken = ctx.ID().getSymbol();
         int line = idToken.getLine();
@@ -88,7 +88,7 @@ public class AntlrToVarDecl extends stackbasedoperationsBaseVisitor<VariableDecl
     }
 
     @Override
-    public VariableDeclaration visitInitvarint(stackbasedoperationsParser.InitvarintContext ctx) {
+    public VariableDeclaration visitInitvarint(ArrayOperationsParser.InitvarintContext ctx) {
         // INT_TYPE ID '=' INT ';'       #initvarint
         Token idToken = ctx.ID().getSymbol();
         int line = idToken.getLine();

@@ -1,7 +1,7 @@
 package ParseTreeVisitor;
 
-import antlr.stackbasedoperationsBaseVisitor;
-import antlr.stackbasedoperationsParser;
+import antlr.ArrayOperationsBaseVisitor;
+import antlr.ArrayOperationsParser;
 import evaluationWithVisitor.Variable;
 import model.Affectation;
 import model.SimpleOp;
@@ -10,7 +10,7 @@ import utils.MySyntaxeErrorListener;
 import java.util.HashMap;
 import java.util.List;
 
-public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectation<?>> {
+public class AntlrToAffectation extends ArrayOperationsBaseVisitor<Affectation<?>> {
     // List of semantic errors
     private List<String> semanticErrors;
 
@@ -31,7 +31,7 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
      * @return an Affectation object representing the simple operation
      */
     @Override
-    public Affectation<?> visitAffectsimpleop(stackbasedoperationsParser.AffectsimpleopContext ctx) {
+    public Affectation<?> visitAffectsimpleop(ArrayOperationsParser.AffectsimpleopContext ctx) {
         String varName = ctx.ID().getText();
         if (!symbolTable.containsKey(varName)) {
             MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName);
@@ -56,7 +56,7 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
      * @return an Affectation object representing the array
      */
     @Override
-    public Affectation<?> visitAffectarray(stackbasedoperationsParser.AffectarrayContext ctx) {
+    public Affectation<?> visitAffectarray(ArrayOperationsParser.AffectarrayContext ctx) {
         String varName = ctx.ID().getText();
         if (!symbolTable.containsKey(varName)) {
             MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName);
@@ -81,7 +81,7 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
      * @return an Affectation object representing the integer value
      */
     @Override
-    public Affectation<?> visitAffectint(stackbasedoperationsParser.AffectintContext ctx) {
+    public Affectation<?> visitAffectint(ArrayOperationsParser.AffectintContext ctx) {
         String varName = ctx.ID().getText();
         if (!symbolTable.containsKey(varName)) {
             MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName);
@@ -94,5 +94,26 @@ public class AntlrToAffectation extends stackbasedoperationsBaseVisitor<Affectat
             semanticErrors.add(syntaxError.getErrorTypeMismatch("int"));
         }
         return new Affectation<>(varName, value);
+    }
+
+    @Override
+    public Affectation<?> visitAffectvar(ArrayOperationsParser.AffectvarContext ctx) {
+        String varName1 = ctx.getChild(0).getText();
+        String varName2 = ctx.getChild(2).getText();
+        if (!symbolTable.containsKey(varName1)) {
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName1);
+            semanticErrors.add(syntaxError.getErrorDeclaration());
+        }
+        if (!symbolTable.containsKey(varName2)) {
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName2);
+            semanticErrors.add(syntaxError.getErrorDeclaration());
+        }
+        Variable var1 = symbolTable.get(varName1);
+        Variable var2 = symbolTable.get(varName2);
+        if (!var1.getType().equals(var2.getType())) {
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, varName1);
+            semanticErrors.add(syntaxError.getErrorTypeMismatch(var2.getType()));
+        }
+        return new Affectation<>(varName1, varName2);
     }
 }

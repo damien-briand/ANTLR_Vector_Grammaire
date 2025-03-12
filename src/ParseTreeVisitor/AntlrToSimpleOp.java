@@ -1,7 +1,7 @@
 package ParseTreeVisitor;
 
-import antlr.stackbasedoperationsBaseVisitor;
-import antlr.stackbasedoperationsParser;
+import antlr.ArrayOperationsBaseVisitor;
+import antlr.ArrayOperationsParser;
 import evaluationWithVisitor.Variable;
 import model.*;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AntlrToSimpleOp extends stackbasedoperationsBaseVisitor<SimpleOp> {
+public class AntlrToSimpleOp extends ArrayOperationsBaseVisitor<SimpleOp> {
     final AntlrToArray arrayVisitor = new AntlrToArray();
     // List of semantic errors
     private List<String> semanticErrors;
@@ -22,7 +22,7 @@ public class AntlrToSimpleOp extends stackbasedoperationsBaseVisitor<SimpleOp> {
     }
 
     @Override
-    public Max visitMax(stackbasedoperationsParser.MaxContext ctx) {
+    public Max visitMax(ArrayOperationsParser.MaxContext ctx) {
         ArrayList<Integer> arrayVisit = arrayVisitor.visit(ctx.array());
         Max max = new Max();
         max.setData(arrayVisit);
@@ -30,7 +30,7 @@ public class AntlrToSimpleOp extends stackbasedoperationsBaseVisitor<SimpleOp> {
     }
 
     @Override
-    public Min visitMin(stackbasedoperationsParser.MinContext ctx) {
+    public Min visitMin(ArrayOperationsParser.MinContext ctx) {
         ArrayList<Integer> arrayVisit = arrayVisitor.visit(ctx.array());
         Min min = new Min();
         min.setData(arrayVisit);
@@ -38,7 +38,7 @@ public class AntlrToSimpleOp extends stackbasedoperationsBaseVisitor<SimpleOp> {
     }
 
     @Override
-    public Prod visitProd(stackbasedoperationsParser.ProdContext ctx) {
+    public Prod visitProd(ArrayOperationsParser.ProdContext ctx) {
         ArrayList<Integer> arrayVisit = arrayVisitor.visit(ctx.array());
         Prod prod = new Prod();
         prod.setData(arrayVisit);
@@ -46,7 +46,7 @@ public class AntlrToSimpleOp extends stackbasedoperationsBaseVisitor<SimpleOp> {
     }
 
     @Override
-    public Sort visitSort(stackbasedoperationsParser.SortContext ctx) {
+    public Sort visitSort(ArrayOperationsParser.SortContext ctx) {
         ArrayList<Integer> arrayVisit = arrayVisitor.visit(ctx.array());
         Sort sort = new Sort();
         sort.setData(arrayVisit);
@@ -54,7 +54,7 @@ public class AntlrToSimpleOp extends stackbasedoperationsBaseVisitor<SimpleOp> {
     }
 
     @Override
-    public Sum visitSum(stackbasedoperationsParser.SumContext ctx) {
+    public Sum visitSum(ArrayOperationsParser.SumContext ctx) {
         ArrayList<Integer> arrayVisit = arrayVisitor.visit(ctx.array());
         Sum sum = new Sum();
         sum.setData(arrayVisit);

@@ -1,7 +1,7 @@
 package ParseTreeVisitor;
 
-import antlr.stackbasedoperationsBaseVisitor;
-import antlr.stackbasedoperationsParser;
+import antlr.ArrayOperationsBaseVisitor;
+import antlr.ArrayOperationsParser;
 import evaluationWithVisitor.Variable;
 import model.Program;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AntlrToProgram extends stackbasedoperationsBaseVisitor<Program>{
+public class AntlrToProgram extends ArrayOperationsBaseVisitor<Program>{
 
     // List of semantic errors
     // – variable re-declaration
@@ -23,7 +23,7 @@ public class AntlrToProgram extends stackbasedoperationsBaseVisitor<Program>{
     public HashMap<String, Variable> symbolTable;
 
     @Override
-    public Program visitProgram(stackbasedoperationsParser.ProgramContext ctx) {
+    public Program visitProgram(ArrayOperationsParser.ProgramContext ctx) {
         // program : (instruction)+ EOF;
         Program theProgram = new Program();
         symbolTable = new HashMap<>();
