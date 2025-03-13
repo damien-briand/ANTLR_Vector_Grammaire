@@ -2,7 +2,9 @@ package ParseTreeVisitor;
 
 import antlr.ArrayOperationsBaseVisitor;
 import antlr.ArrayOperationsParser;
+import evaluationWithVisitor.ArrayOperationDoInterpretVisitor;
 import evaluationWithVisitor.Variable;
+import model.SimpleOp;
 import model.VariableDeclaration;
 import org.antlr.v4.runtime.Token;
 import utils.MySyntaxeErrorListener;
@@ -80,7 +82,6 @@ public class AntlrToVarDecl extends ArrayOperationsBaseVisitor<VariableDeclarati
             MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, id);
             semanticErrors.add(syntaxError.getErrorAlreadyDecl());
         } else {
-
             symbolTable.put(id, new Variable(id, type));
         }
 
@@ -104,7 +105,38 @@ public class AntlrToVarDecl extends ArrayOperationsBaseVisitor<VariableDeclarati
         } else {
             symbolTable.put(id, new Variable(id, type, value));
         }
-
         return new VariableDeclaration(id, type, value);
+    }
+
+    @Override
+    public VariableDeclaration visitInitvarop(ArrayOperationsParser.InitvaropContext ctx) {
+        // INT_TYPE ID '=' simpleOp ';'  #initvarop
+        String type = ctx.getChild(0).getText();
+        String id = ctx.getChild(1).getText();
+
+        SimpleOp simpleOp = new AntlrToSimpleOp(semanticErrors, symbolTable).visit(ctx.simpleop());
+        if (symbolTable.containsKey(id)) {
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, id);
+            semanticErrors.add(syntaxError.getErrorAlreadyDecl());
+        } else {
+            symbolTable.put(id, new Variable(id, type, simpleOp.accept(new ArrayOperationDoInterpretVisitor())));
+        }
+        return new VariableDeclaration(id, type, simpleOp);
+    }
+
+    @Override
+    public VariableDeclaration visitInitvararrayop(ArrayOperationsParser.InitvararrayopContext ctx) {
+        // ARRAY_TYPE ID '=' simpleOp ';' #initvararrayop
+        String type = ctx.getChild(0).getText();
+        String id = ctx.getChild(1).getText();
+
+        SimpleOp simpleOp = new AntlrToSimpleOp(semanticErrors, symbolTable).visit(ctx.simpleop());
+        if (symbolTable.containsKey(id)) {
+            MySyntaxeErrorListener syntaxError = new MySyntaxeErrorListener(ctx, id);
+            semanticErrors.add(syntaxError.getErrorAlreadyDecl());
+        } else {
+            symbolTable.put(id, new Variable(id, type, simpleOp.accept(new ArrayOperationDoInterpretVisitor())));
+        }
+        return new VariableDeclaration(id, type, simpleOp);
     }
 }

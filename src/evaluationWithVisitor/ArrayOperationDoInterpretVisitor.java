@@ -93,7 +93,44 @@ public class ArrayOperationDoInterpretVisitor implements ArrayOperationsVisitor<
      */
     @Override
     public Object visit(varOut varOut) {
-        System.out.println(variables.get(varOut.getID()).getValue());
+        System.out.println(varOut.getID() + " = " + variables.get(varOut.getID()).getValue());
+        return null;
+    }
+
+    /**
+        * Visits a varIn node and prompts the user to enter a value for the variable with the given ID.
+        * If the variable is an array, the user is prompted to enter a list of values.
+        * The variable is then created and added to the symbol table.
+        * @param varIn the varIn node to visit
+        * @return null
+     */
+    @Override
+    public Object visit(varIn varIn) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter a value for " + varIn.getID() + ": ");
+        if (variables.get(varIn.getID()).getType().equals(Variable.Type.INT.toString().toLowerCase())) {
+            int value;
+            while (!scanner.hasNextInt()) {
+                System.out.println("Please enter an integer value.");
+                scanner.nextLine();
+            }
+            value = scanner.nextInt();
+            Variable<?> variable = new Variable<>(varIn.getID(), "int", value);
+            variables.put(varIn.getID(), variable);
+        } else {
+            String value = scanner.next();
+            while (value.length() == 0 || !value.startsWith("[") || !value.endsWith("]") || !value.contains(",")) {
+                System.out.println("Please enter a list of integer values.");
+                value = scanner.nextLine();
+            }
+            String[] values = value.substring(1, value.length() - 1).split(",");
+            ArrayList<Integer> data = new ArrayList<>();
+            for (String s : values) {
+                data.add(Integer.parseInt(s));
+            }
+            Variable<?> variable = new Variable<>(varIn.getID(), Variable.Type.ARRAY.toString().toLowerCase(), data);
+            variables.put(varIn.getID(), variable);
+        }
         return null;
     }
 
@@ -137,10 +174,16 @@ public class ArrayOperationDoInterpretVisitor implements ArrayOperationsVisitor<
     @Override
     public Object visit(VariableDeclaration<?> variableDeclaration) {
         if (variableDeclaration.getValue() != null) {
-            Variable<?> variable = new Variable<>(variableDeclaration.getID(), variableDeclaration.getType(), variableDeclaration.getValue());
-            variables.put(variableDeclaration.getID(), variable);
-        }
-        else {
+            if (variableDeclaration.getValue() instanceof SimpleOp) {
+                SimpleOp simpleOp = (SimpleOp) variableDeclaration.getValue();
+                Object result = simpleOp.accept(this);
+                Variable<?> variable = new Variable<>(variableDeclaration.getID(), variableDeclaration.getType(), result);
+                variables.put(variableDeclaration.getID(), variable);
+            } else {
+                Variable<?> variable = new Variable<>(variableDeclaration.getID(), variableDeclaration.getType(), variableDeclaration.getValue());
+                variables.put(variableDeclaration.getID(), variable);
+            }
+        } else {
             Variable<?> variable = new Variable<>(variableDeclaration.getID(), variableDeclaration.getType());
             variables.put(variableDeclaration.getID(), variable);
         }

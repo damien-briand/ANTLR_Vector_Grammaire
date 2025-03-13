@@ -1,0 +1,5 @@
+int a = sum [1,2,3];
+array b = sort [3,5,1];
+
+print a;
+print b;

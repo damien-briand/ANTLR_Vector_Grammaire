@@ -24,6 +24,8 @@ public interface ArrayOperationsVisitor<R> {
 
     R visit(varOut vo);
 
+    R visit(varIn vi);
+
     R visit(Affectation<?> affectation);
 
     R visit(VariableDeclaration<?> variableDeclaration);

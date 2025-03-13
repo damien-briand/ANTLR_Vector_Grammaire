@@ -37,12 +37,20 @@ public class ComputeApp_EvalVisitor {
             System.out.println("The model printed using toString of the Model classes:");
             System.out.println(commandLineModel.instructions);
 
-            // print the semantic errors
-            System.err.println("** Semantic errors **");
-            for (String error : inputVisitor.semanticErrors) {
-                System.err.println(error);
-            }
+            // Affiche les variables
+            System.out.println("\nThe symbol table:");
+            inputVisitor.symbolTable.forEach((k, v) -> {
+                System.out.println(v.getType() + " " + k + " = " + v.getValue());
+            });
+            System.out.println("\n");
 
+            // print the semantic errors
+            if (inputVisitor.semanticErrors.size() > 0){
+                System.err.println("** Semantic errors **");
+                for (String error : inputVisitor.semanticErrors) {
+                    System.err.println(error);
+                }
+            }
             // build the visitor for the first named rule
             ArrayOperationDoInterpretVisitor doInterpretVisitor = new ArrayOperationDoInterpretVisitor();
             // use this visitor to visit the parse tree
