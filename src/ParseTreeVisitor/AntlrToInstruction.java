@@ -38,4 +38,9 @@ public class AntlrToInstruction extends ArrayOperationsBaseVisitor<Instruction> 
     public Instruction visitVaroutinstruction(ArrayOperationsParser.VaroutinstructionContext ctx) {
         return new AntlrToVarOut(semanticErrors, symbolTable).visit(ctx.varout());
     }
+
+    @Override
+    public Instruction visitVarininstruction(ArrayOperationsParser.VarininstructionContext ctx) {
+        return new AntlrToVarIn(semanticErrors, symbolTable).visit(ctx.varin());
+    }
 }
